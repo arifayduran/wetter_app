@@ -16,6 +16,10 @@
 	<string>wetter_app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Wir benötigen Ihren Standort, um Ihnen personalisierte Wetterdaten anzuzeigen.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Wir benötigen Ihren Standort, um Ihnen personalisierte Wetterdaten anzuzeigen.</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
