@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wetter_app/src/features/weather/presentation/my_location_screen.dart';
-import 'package:wetter_app/src/features/weather/presentation/weather_screen.dart';
+import 'package:wetter_app/src/features/weather/presentation/weather_screen_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
