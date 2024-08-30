@@ -15,11 +15,11 @@ String getTodaysDescription(
 
   for (var hour in hourlyWeatherData.keys) {
     final hourData = hourlyWeatherData[hour]!;
-    final precipitation = hourData["precipitation"] ?? 0.0;
+    final precipitation = hourData["precipitationprobability"] ?? 0.0;
     final cloudCover = hourData["cloudcover"] ?? 0;
     final temperature = hourData["temperature"] ?? 0.0;
 
-    if (precipitation > 0) {
+    if (precipitation > 50) {
       hasRain = true;
       if (hour >= 6 && hour < 12) {
         rainInMorning = true;
@@ -76,5 +76,5 @@ String getTodaysDescription(
     description += "Die Temperaturen werden angenehm sein. ";
   }
 
-  return description;
+  return description.trim();
 }

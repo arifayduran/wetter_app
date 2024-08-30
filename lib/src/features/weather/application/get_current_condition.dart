@@ -14,7 +14,7 @@ String getCurrentCondition(
     return isDayTime ? (cloudCover > 75 ? "Armageddon" : "Regen") : "Regen";
   }
 
-  if (cloudCover > 75) {
+  if (cloudCover > 65) {
     return isDayTime ? "Stark Bewölkt" : "Stark Bewölkt";
   } else if (cloudCover > 25) {
     return isDayTime ? "Teilweise Bewölkt" : "Teilweise Bewölkt";

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({super.key, required this.location});
+class WeatherScreenWidget extends StatefulWidget {
+  const WeatherScreenWidget({super.key, required this.location});
   final String location;
 
   @override
-  State<WeatherScreen> createState() => _WeatherScreenState();
+  State<WeatherScreenWidget> createState() => _WeatherScreenWidgetState();
 }
 
-class _WeatherScreenState extends State<WeatherScreen> {
+class _WeatherScreenWidgetState extends State<WeatherScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return const SizedBox.expand(
