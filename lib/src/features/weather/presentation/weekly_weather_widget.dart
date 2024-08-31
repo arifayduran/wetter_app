@@ -45,13 +45,16 @@ class WeeklyWeatherWidget extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
-                    "${minTemp.toStringAsFixed(0)}°  ",
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 15.4,
-                        height: 0,
-                        fontWeight: FontWeight.w500),
+                  SizedBox(
+                    width: 30,
+                    child: Text(
+                      "${minTemp.toStringAsFixed(0)}°",
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 15.4,
+                          height: 0,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Container(
                     width: 91,
@@ -60,13 +63,19 @@ class WeeklyWeatherWidget extends StatelessWidget {
                         color: Colors.white,
                         gradient: LinearGradient(colors: indicationColors)),
                   ),
-                  Text(
-                    "  ${maxTemp.toStringAsFixed(0)}°",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.4,
-                        height: 0,
-                        fontWeight: FontWeight.w500),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: 30,
+                    child: Text(
+                      "${maxTemp.toStringAsFixed(0)}°",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.4,
+                          height: 0,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ],
               ),

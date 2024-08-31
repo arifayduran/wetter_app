@@ -517,7 +517,8 @@ class _MyLocationScreenState extends State<MyLocationScreen> {
                                                   : entry.key;
                                               final data = entry.value;
                                               return HourlyWeather(
-                                                time: "$hour Uhr",
+                                                time:
+                                                    "${hour == 24 ? "00" : hour} Uhr",
                                                 imagePath:
                                                     getImagePathWeatherConditions(
                                                   data["precipitationprobability"]
@@ -639,15 +640,20 @@ class _MyLocationScreenState extends State<MyLocationScreen> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Text(
-                                                      "${_todayMinTemp?.toStringAsFixed(0)}°  ",
-                                                      style: TextStyle(
-                                                          color: Colors.white
-                                                              .withOpacity(0.5),
-                                                          fontSize: 15.4,
-                                                          height: 0,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                    SizedBox(
+                                                      width: 30,
+                                                      child: Text(
+                                                        "${_todayMinTemp?.toStringAsFixed(0)}°  ",
+                                                        style: TextStyle(
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            fontSize: 15.4,
+                                                            height: 0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
                                                     ),
                                                     Stack(
                                                       children: [
@@ -696,14 +702,21 @@ class _MyLocationScreenState extends State<MyLocationScreen> {
                                                         ),
                                                       ],
                                                     ),
-                                                    Text(
-                                                      "  ${_todayMaxTemp?.toStringAsFixed(0)}°",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15.4,
-                                                          height: 0,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 30,
+                                                      child: Text(
+                                                        "${_todayMaxTemp?.toStringAsFixed(0)}°",
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15.4,
+                                                            height: 0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
