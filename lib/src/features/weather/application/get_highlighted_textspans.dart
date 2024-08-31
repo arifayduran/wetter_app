@@ -6,15 +6,15 @@ List<TextSpan> getHighlightedTextSpans(String suggestion, String query) {
   final String lowerCaseQuery = query.toLowerCase();
 
   int start = 0;
+  double fontSize = 13.0;
   int indexOfQuery = lowerCaseSuggestion.indexOf(lowerCaseQuery, start);
 
   while (indexOfQuery != -1) {
-
     if (indexOfQuery > start) {
       spans.add(
         TextSpan(
           text: suggestion.substring(start, indexOfQuery),
-          style: const TextStyle(color: Colors.white54),
+          style: TextStyle(color: Colors.white54, fontSize: fontSize),
         ),
       );
     }
@@ -22,7 +22,7 @@ List<TextSpan> getHighlightedTextSpans(String suggestion, String query) {
     spans.add(
       TextSpan(
         text: suggestion.substring(indexOfQuery, indexOfQuery + query.length),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white, fontSize: fontSize),
       ),
     );
 
@@ -34,7 +34,7 @@ List<TextSpan> getHighlightedTextSpans(String suggestion, String query) {
     spans.add(
       TextSpan(
         text: suggestion.substring(start),
-        style: const TextStyle(color: Colors.white54),
+        style: TextStyle(color: Colors.white54, fontSize: fontSize),
       ),
     );
   }

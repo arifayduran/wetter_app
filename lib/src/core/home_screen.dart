@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sficon/flutter_sficon.dart';
 import 'package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart';
 import 'package:wetter_app/src/features/weather/application/search_for_places.dart';
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late Animation<Offset> _buttonAnimation;
 
+  static const platform = MethodChannel('com.example.speech');
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen>
 
     _searchFocusNode.addListener(() {
       setState(() {
-        _isSearching = _searchFocusNode.hasFocus;
         if (_isSearching) {
           _animationController.forward();
         } else {
@@ -50,14 +52,6 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
     });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _searchFocusNode.dispose();
-    _animationController.dispose();
-    super.dispose();
   }
 
   void _onSearchChanged(String query) async {
@@ -78,6 +72,24 @@ class _HomeScreenState extends State<HomeScreen>
         _suggestions.clear();
       });
     }
+  }
+
+  Future<void> _startSpeechRecognition() async {
+    try {
+      final String result =
+          await platform.invokeMethod('startSpeechRecognition');
+      _searchController.text = result;
+    } on PlatformException catch (e) {
+      print("Failed to start speech recognition: '${e.message}'.");
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -157,11 +169,17 @@ class _HomeScreenState extends State<HomeScreen>
                         controller: _searchController,
                         textInputAction: TextInputAction.search,
                         focusNode: _searchFocusNode,
+                        onSubmitted: (value) {
+                          FocusScope.of(context).unfocus();
+                        },
                         cursorColor: Colors.white,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 13),
                         onChanged: _onSearchChanged,
                         keyboardType: TextInputType.text,
+                        onTap: () {
+                          _isSearching = true;
+                        },
                         keyboardAppearance: Brightness.dark,
                         decoration: InputDecoration(
                           prefixIcon: const Padding(
@@ -179,22 +197,35 @@ class _HomeScreenState extends State<HomeScreen>
                           hintText: "Stadt oder Flughafen suchen",
                           hintStyle: const TextStyle(
                               color: Colors.white54, fontSize: 13),
+                          suffixIconConstraints:
+                              const BoxConstraints(minHeight: 30, minWidth: 30),
                           suffixIcon: _searchController.text.isNotEmpty
                               ? GestureDetector(
                                   onTap: () {
-                                    _searchController.clear();
-                                    _onSearchChanged('');
+                                    setState(() {
+                                      _searchController.clear();
+                                      _onSearchChanged('');
+                                    });
                                   },
-                                  child: const SFIcon(
-                                    SFIcons.sf_xmark_circle_fill,
-                                    color: Colors.white54,
-                                    fontSize: 14,
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(top: 6.0, left: 6),
+                                    child: SFIcon(
+                                      SFIcons.sf_xmark_circle_fill,
+                                      color: Colors.white54,
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 )
-                              : const SFIcon(
-                                  SFIcons.sf_mic_fill,
-                                  color: Colors.white54,
-                                  fontSize: 14,
+                              : GestureDetector(
+                                  onTap: _startSpeechRecognition,
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(top: 6.0, left: 6),
+                                    child: SFIcon(
+                                      SFIcons.sf_mic_fill,
+                                      color: Colors.white54,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
                           filled: true,
                           fillColor: Colors.white10,
@@ -211,11 +242,10 @@ class _HomeScreenState extends State<HomeScreen>
                         child: GestureDetector(
                           onTap: () {
                             FocusScope.of(context).unfocus();
-                            _suggestions.clear();
-                            _searchController.clear();
-
                             setState(() {
                               _isSearching = false;
+                              _searchController.clear();
+                              _suggestions.clear();
                             });
                           },
                           child: const SizedBox(
@@ -239,45 +269,48 @@ class _HomeScreenState extends State<HomeScreen>
                   height: MediaQuery.of(context).size.height - 185,
                   width: MediaQuery.of(context).size.width - 26,
                   child: Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return const WeatherScreen();
-                                },
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Container(
-                                width: double.infinity,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/wolken_card.jpeg"),
-                                      fit: BoxFit.fill),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(12.0),
-                                  child: Text(
-                                    "Mein Standort",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (BuildContext context) {
+                                    return const WeatherScreen();
+                                  },
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    image: const DecorationImage(
+                                        image: AssetImage(
+                                            "assets/images/wolken_card.jpeg"),
+                                        fit: BoxFit.fill),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Text(
+                                      "Mein Standort",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       if (_isSearching)
                         Positioned(
@@ -293,16 +326,17 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                         ),
-                      if (_suggestions.isNotEmpty && _isSearching)
+                      if (_suggestions.isNotEmpty)
                         Positioned(
                           left: 0,
                           top: 0,
                           child: Container(
                             color: Colors.black,
-                            height: 421,
+                            height: _searchFocusNode.hasFocus ? 421 : 770,
                             width: MediaQuery.of(context).size.width - 26,
                             child: ListView.builder(
                               itemCount: _suggestions.length,
+                              padding: const EdgeInsets.all(0),
                               itemBuilder: (context, index) {
                                 final placeName =
                                     _suggestions.keys.elementAt(index);
@@ -310,30 +344,33 @@ class _HomeScreenState extends State<HomeScreen>
                                 final admin1 = placeDetails[0];
                                 final country = placeDetails[1];
 
-                                return ListTile(
-                                  dense: true,
-                                  title: RichText(
-                                    text: TextSpan(
-                                      children: getHighlightedTextSpans(
-                                          "$placeName, $admin1, $country",
-                                          _searchController.text),
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: ListTile(
+                                    minTileHeight: 37,
+                                    dense: true,
+                                    title: RichText(
+                                      text: TextSpan(
+                                        children: getHighlightedTextSpans(
+                                            "$placeName, $admin1, $country",
+                                            _searchController.text),
+                                      ),
                                     ),
+                                    onTap: () {
+                                      // final latitude =
+                                      //     double.tryParse(placeDetails[2]);
+                                      // final longitude =
+                                      //     double.tryParse(placeDetails[3]);
+
+                                      FocusScope.of(context).unfocus();
+                                      setState(() {
+                                        _suggestions.clear();
+                                        _isSearching = false;
+                                        _searchController.clear();
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    final latitude =
-                                        double.tryParse(placeDetails[2]);
-                                    final longitude =
-                                        double.tryParse(placeDetails[3]);
-
-                                    // funktionen
-
-                                    _searchController.text =
-                                        _suggestions.keys.toList()[index];
-                                    FocusScope.of(context).unfocus();
-                                    setState(() {
-                                      _suggestions = {};
-                                    });
-                                  },
                                 );
                               },
                             ),

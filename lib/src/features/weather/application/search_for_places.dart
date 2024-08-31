@@ -62,6 +62,7 @@ Future<Map<String, List<String>>> searchForPlaces(String query) async {
       'https://geocoding-api.open-meteo.com/v1/search?name=$query&count=100&language=de&format=json';
 
   Map<String, List<String>> placesWithCoordinates = {};
+  int retries = 3;
 
   try {
     final response = await http.get(Uri.parse(url));
@@ -87,8 +88,11 @@ Future<Map<String, List<String>>> searchForPlaces(String query) async {
       throw Exception('Failed to load suggestions');
     }
   } catch (e) {
-    print(e);
-    throw Exception('Error fetching data: $e');
+    retries--;
+    if (retries == 0) {
+      throw Exception('Error fetching data: $e');
+    }
+    await Future.delayed(const Duration(seconds: 1));
   }
 
   return placesWithCoordinates;

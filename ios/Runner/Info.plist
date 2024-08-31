@@ -14,6 +14,10 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>wetter_app</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>[Permission explanation]</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need your microphone to convert speech to text</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
