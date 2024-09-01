@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_sficon/flutter_sficon.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart';
-import 'package:wetter_app/src/features/weather/application/search_for_places.dart';
-import 'package:wetter_app/src/features/weather/data/places.dart';
-import 'package:wetter_app/src/features/weather/presentation/places_card.dart';
-import 'package:wetter_app/src/features/weather/presentation/weather_screen.dart';
-import 'package:wetter_app/src/features/weather/presentation/weather_screen_widget.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_sficon/flutter_sficon.dart";
+import "package:flutter_slidable/flutter_slidable.dart";
+import "package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart";
+import "package:wetter_app/src/features/weather/application/loard_places_from_shared_preferences.dart";
+import "package:wetter_app/src/features/weather/application/save_places_to_shared_preferences.dart";
+import "package:wetter_app/src/features/weather/application/search_for_places.dart";
+import "package:wetter_app/src/features/weather/data/places.dart";
+import "package:wetter_app/src/features/weather/presentation/widgets/places_card_widget.dart";
+import "package:wetter_app/src/features/weather/presentation/weather_screen.dart";
+import "package:wetter_app/src/features/weather/presentation/widgets/weather_screen_widget.dart";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,11 +28,13 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late Animation<Offset> _buttonAnimation;
 
-  static const platform = MethodChannel('com.example.speech');
+  static const platform = MethodChannel("com.example.speech");
 
   @override
   void initState() {
     super.initState();
+
+    // _loadPref();
 
     _animationController = AnimationController(
       vsync: this,
@@ -79,16 +83,17 @@ class _HomeScreenState extends State<HomeScreen>
   Future<void> _startSpeechRecognition() async {
     try {
       final String result =
-          await platform.invokeMethod('startSpeechRecognition');
+          await platform.invokeMethod("startSpeechRecognition");
       _searchController.text = result;
     } on PlatformException catch (e) {
-      print("Failed to start speech recognition: '${e.message}'.");
+      // ignore: avoid_print
+      print('Failed to start speech recognition: "${e.message}".');
     }
   }
 
   void _savePlace(int index, String name, String admin1AndCountry,
-      double latitude, double longitude, bottombarColor) {
-    places[PlacesCard(text: name)] = [
+      double latitude, double longitude, bottombarColor) async {
+    places[PlacesCardWidgetWIdget(text: name)] = [
       WeatherScreen(placeIndex: index),
       WeatherScreenWidget(
           name: name,
@@ -98,6 +103,25 @@ class _HomeScreenState extends State<HomeScreen>
           bottombarColor: bottombarColor)
     ];
   }
+
+  Future<void> _loadPref() async {
+    try {
+      places = await loadPlacesFromPreferences();
+      setState(() {});
+    } catch (e) {
+      print('Error loading preferences: $e');
+    }
+  }
+
+  Future<void> _savePref() async {
+    try {
+      await savePlacesToPreferences();
+    } catch (e) {
+      print('Error saving preferences: $e');
+    }
+  }
+
+  // Future<void> _refresh() async {}
 
   @override
   void dispose() {
@@ -219,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   onTap: () {
                                     setState(() {
                                       _searchController.clear();
-                                      _onSearchChanged('');
+                                      _onSearchChanged("");
                                     });
                                   },
                                   child: const Padding(
@@ -286,77 +310,93 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      ListView.builder(
-                        padding: const EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        itemCount: places.length,
-                        itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (BuildContext context) {
-                                      return places.values.toList()[index][0];
-                                    },
-                                  );
-                                },
-                                child: places.keys.toList()[index],
-                              ),
-                            );
-                          } else {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: SizedBox(
-                                height: 100,
-                                child: Slidable(
-                                  closeOnScroll: true,
-                                  key: UniqueKey(),
-                                  endActionPane: ActionPane(
-                                    extentRatio: 0.19,
-                                    motion: const ScrollMotion(),
-                                    dismissible:
-                                        DismissiblePane(onDismissed: () {
-                                      setState(() {});
-                                    }),
-                                    children: [
-                                      CustomSlidableAction(
-                                        onPressed: (_) {
-                                          setState(() {});
-                                        },
-                                        backgroundColor: Colors.red,
-                                        foregroundColor: Colors.white,
-                                        padding: const EdgeInsets.only(
-                                            left: 25, right: double.infinity),
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: const SFIcon(
-                                          SFIcons.sf_trash_fill,
-                                          fontSize: 17,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height - 185,
+                        width: MediaQuery.of(context).size.width - 16,
+                        // child: RefreshIndicator(
+                        //   onRefresh: _refresh,
+                        //   backgroundColor: Colors.transparent,
+                        //   color: Colors.white,
+                        child: ListView.builder(
+                          clipBehavior: Clip.none,
+                          padding: const EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          itemCount: places.length,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (BuildContext context) {
+                                        return places.values.toList()[index][0];
+                                      },
+                                    );
+                                  },
+                                  child: places.keys.toList()[index],
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: SizedBox(
+                                  height: 100,
+                                  child: Slidable(
+                                    closeOnScroll: true,
+                                    key: UniqueKey(),
+                                    endActionPane: ActionPane(
+                                      extentRatio: 0.19,
+                                      motion: const ScrollMotion(),
+                                      dismissible:
+                                          DismissiblePane(onDismissed: () {
+                                        setState(() {
+                                          places.remove(
+                                              places.keys.toList()[index]);
+                                        });
+                                      }),
+                                      children: [
+                                        CustomSlidableAction(
+                                          onPressed: (_) {
+                                            setState(() {
+                                              places.remove(
+                                                  places.keys.toList()[index]);
+                                            });
+                                          },
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                          padding: const EdgeInsets.only(
+                                              left: 25, right: double.infinity),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: const SFIcon(
+                                            SFIcons.sf_trash_fill,
+                                            fontSize: 17,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        builder: (BuildContext context) {
-                                          return places.values.toList()[index]
-                                              [0];
-                                        },
-                                      );
-                                    },
-                                    child: places.keys.toList()[index],
+                                      ],
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (BuildContext context) {
+                                            return places.values.toList()[index]
+                                                [0];
+                                          },
+                                        );
+                                      },
+                                      child: places.keys.toList()[index],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }
-                        },
+                              );
+                            }
+                          },
+                        ),
                       ),
                       if (_isSearching)
                         Positioned(
@@ -413,6 +453,7 @@ class _HomeScreenState extends State<HomeScreen>
                                             double.tryParse(placeDetails[2])!,
                                             double.tryParse(placeDetails[3])!,
                                             bottombarColor);
+                                        // _savePref();
                                         _suggestions.clear();
                                         _isSearching = false;
                                         _searchController.clear();

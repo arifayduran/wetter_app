@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sficon/flutter_sficon.dart';
 import 'package:wetter_app/src/features/weather/data/places.dart';
-// import 'package:wetter_app/src/features/weather/presentation/weather_screen_widget.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key, required this.placeIndex});
@@ -13,12 +13,14 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  late PageController _pageController;
   late int _currentIndex;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.placeIndex;
+    _pageController = PageController(initialPage: _currentIndex);
     bottombarColor.value = Colors.blue;
   }
 
@@ -29,7 +31,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
       builder: (BuildContext context, Color value, Widget? child) {
         return Scaffold(
           backgroundColor: Colors.black,
-          body: places.values.toList()[_currentIndex][1],
+          body: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            itemCount: places.values.length,
+            itemBuilder: (context, index) {
+              return places.values.toList()[index][1];
+            },
+          ),
           bottomNavigationBar: Container(
             height: 72,
             color: value.withOpacity(.8),
@@ -43,9 +56,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     const SizedBox(
                       width: 16,
                     ),
-                    const Text(
-                      "BAUSTYELL",
-                      style: TextStyle(color: Colors.white),
+                    SmoothPageIndicator(
+                      controller: _pageController,
+                      // onDotClicked: (index) {
+                      //   setState(() {
+                      //     _currentIndex = index;
+                      //   });
+                      // },
+                      count: places.values.length,
+                      effect: ExpandingDotsEffect(
+                        dotHeight: 6.5,
+                        dotWidth: 6.5,
+                        expansionFactor: 3,
+                        spacing: 6,
+                        activeDotColor: Colors.white,
+                        dotColor: Colors.white.withOpacity(0.5),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {

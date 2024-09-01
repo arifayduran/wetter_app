@@ -3,12 +3,25 @@ String getCurrentCondition(
   int cloudCover,
   String sunriseTime,
   String sunsetTime,
-  int hour,
+  String currentTime,
 ) {
   final int sunriseHour = int.tryParse(sunriseTime.split(':')[0])!;
-  final int sunsetHour = int.tryParse(sunsetTime.split(':')[0])!;
+  final int sunriseMinute = int.tryParse(sunriseTime.split(':')[1])!;
 
-  bool isDayTime = hour >= sunriseHour && hour < sunsetHour;
+  final int sunsetHour = int.tryParse(sunsetTime.split(':')[0])!;
+  final int sunsetMinute = int.tryParse(sunsetTime.split(':')[1])!;
+
+  final int currentHour = int.tryParse(currentTime.split(':')[0])!;
+  final int currentMinute = int.tryParse(currentTime.split(':')[1])!;
+
+ 
+  bool isAfterSunrise = (currentHour > sunriseHour) ||
+      (currentHour == sunriseHour && currentMinute >= sunriseMinute);
+  bool isBeforeSunset = (currentHour < sunsetHour) ||
+      (currentHour == sunsetHour && currentMinute < sunsetMinute);
+
+  bool isDayTime = isAfterSunrise && isBeforeSunset;
+
 
   if (precipitation > 0) {
     return isDayTime ? (cloudCover > 75 ? "Armageddon" : "Regen") : "Regen";
