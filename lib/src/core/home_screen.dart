@@ -5,10 +5,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart';
 import 'package:wetter_app/src/features/weather/application/search_for_places.dart';
 import 'package:wetter_app/src/features/weather/data/places.dart';
+import 'package:wetter_app/src/features/weather/presentation/places_card.dart';
 import 'package:wetter_app/src/features/weather/presentation/weather_screen.dart';
-
-// ABSTAND OBENNNNN
-// KLAVYE ACILMIYOR
+import 'package:wetter_app/src/features/weather/presentation/weather_screen_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -85,6 +84,19 @@ class _HomeScreenState extends State<HomeScreen>
     } on PlatformException catch (e) {
       print("Failed to start speech recognition: '${e.message}'.");
     }
+  }
+
+  void _savePlace(int index, String name, String admin1AndCountry,
+      double latitude, double longitude, bottombarColor) {
+    places[PlacesCard(text: name)] = [
+      WeatherScreen(placeIndex: index),
+      WeatherScreenWidget(
+          name: name,
+          admin1AndCountry: admin1AndCountry,
+          latitude: latitude,
+          longitude: longitude,
+          bottombarColor: bottombarColor)
+    ];
   }
 
   @override
@@ -279,74 +291,71 @@ class _HomeScreenState extends State<HomeScreen>
                         shrinkWrap: true,
                         itemCount: places.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: SizedBox(
-                              height: 100,
-                              child: Slidable(
-                                closeOnScroll: true,
-                                key: UniqueKey(),
-                                endActionPane: ActionPane(
-                                  extentRatio: 0.19,
-                                  motion: const ScrollMotion(),
-                                  dismissible: DismissiblePane(onDismissed: () {
-                                    setState(() {});
-                                  }),
-                                  children: [
-                                    CustomSlidableAction(
-                                      onPressed: (_) {
-                                        setState(() {});
-                                      },
-                                      backgroundColor: Colors.red,
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.only(
-                                          left: 25, right: double.infinity),
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: const SFIcon(
-                                        SFIcons.sf_trash_fill,
-                                        fontSize: 17,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      builder: (BuildContext context) {
-                                        return const WeatherScreen();
-                                      },
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        image: const DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/wolken_card.jpeg"),
-                                            fit: BoxFit.fill),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(12.0),
-                                        child: Text(
-                                          "Mein Standort",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
+                          if (index == 0) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (BuildContext context) {
+                                      return places.values.toList()[index][0];
+                                    },
+                                  );
+                                },
+                                child: places.keys.toList()[index],
+                              ),
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: SizedBox(
+                                height: 100,
+                                child: Slidable(
+                                  closeOnScroll: true,
+                                  key: UniqueKey(),
+                                  endActionPane: ActionPane(
+                                    extentRatio: 0.19,
+                                    motion: const ScrollMotion(),
+                                    dismissible:
+                                        DismissiblePane(onDismissed: () {
+                                      setState(() {});
+                                    }),
+                                    children: [
+                                      CustomSlidableAction(
+                                        onPressed: (_) {
+                                          setState(() {});
+                                        },
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                        padding: const EdgeInsets.only(
+                                            left: 25, right: double.infinity),
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: const SFIcon(
+                                          SFIcons.sf_trash_fill,
+                                          fontSize: 17,
                                         ),
                                       ),
-                                    ),
+                                    ],
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder: (BuildContext context) {
+                                          return places.values.toList()[index]
+                                              [0];
+                                        },
+                                      );
+                                    },
+                                    child: places.keys.toList()[index],
                                   ),
                                 ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         },
                       ),
                       if (_isSearching)
@@ -395,13 +404,15 @@ class _HomeScreenState extends State<HomeScreen>
                                       ),
                                     ),
                                     onTap: () {
-                                      // final latitude =
-                                      //     double.tryParse(placeDetails[2]);
-                                      // final longitude =
-                                      //     double.tryParse(placeDetails[3]);
-
                                       FocusScope.of(context).unfocus();
                                       setState(() {
+                                        _savePlace(
+                                            places.length,
+                                            placeName,
+                                            "$admin1, $country",
+                                            double.tryParse(placeDetails[2])!,
+                                            double.tryParse(placeDetails[3])!,
+                                            bottombarColor);
                                         _suggestions.clear();
                                         _isSearching = false;
                                         _searchController.clear();
