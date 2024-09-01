@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sficon/flutter_sficon.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart';
 import 'package:wetter_app/src/features/weather/application/search_for_places.dart';
 import 'package:wetter_app/src/features/weather/presentation/weather_screen.dart';
+
+// ABSTAND OBENNNNN
+// KLAVYE ACILMIYOR
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  List<Widget> places = [];
+  List<Widget> places = [SizedBox(), SizedBox(), SizedBox()];
 
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
@@ -267,50 +271,82 @@ class _HomeScreenState extends State<HomeScreen>
                 top: _isSearching ? 40 : 130,
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height - 185,
-                  width: MediaQuery.of(context).size.width - 26,
+                  width: MediaQuery.of(context).size.width - 16,
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (BuildContext context) {
-                                    return const WeatherScreen();
+                      ListView.builder(
+                        itemCount: places.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: SizedBox(
+                              height: 100,
+                              child: Slidable(
+                                closeOnScroll: true,
+                                key: UniqueKey(),
+                                endActionPane: ActionPane(
+                                  extentRatio: 0.19,
+                                  motion: const ScrollMotion(),
+                                  dismissible: DismissiblePane(onDismissed: () {
+                                    setState(() {});
+                                  }),
+                                  children: [
+                                    CustomSlidableAction(
+                                      onPressed: (_) {
+                                        setState(() {});
+                                      },
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.only(
+                                          left: 25, right: double.infinity),
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: const SFIcon(
+                                        SFIcons.sf_trash_fill,
+                                        fontSize: 17,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (BuildContext context) {
+                                        return const WeatherScreen();
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    image: const DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/wolken_card.jpeg"),
-                                        fit: BoxFit.fill),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(12.0),
-                                    child: Text(
-                                      "Mein Standort",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        image: const DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/wolken_card.jpeg"),
+                                            fit: BoxFit.fill),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(12.0),
+                                        child: Text(
+                                          "Mein Standort",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                       if (_isSearching)
                         Positioned(
