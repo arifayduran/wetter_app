@@ -4,6 +4,7 @@ import 'package:flutter_sficon/flutter_sficon.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart';
 import 'package:wetter_app/src/features/weather/application/search_for_places.dart';
+import 'package:wetter_app/src/features/weather/data/places.dart';
 import 'package:wetter_app/src/features/weather/presentation/weather_screen.dart';
 
 // ABSTAND OBENNNNN
@@ -18,8 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  List<Widget> places = [SizedBox(), SizedBox(), SizedBox()];
-
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   Map<String, List<String>> _suggestions = {};
@@ -276,6 +275,8 @@ class _HomeScreenState extends State<HomeScreen>
                     clipBehavior: Clip.none,
                     children: [
                       ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
                         itemCount: places.length,
                         itemBuilder: (context, index) {
                           return Padding(
