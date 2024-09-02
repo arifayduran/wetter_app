@@ -412,58 +412,94 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                         ),
-                      if (_suggestions.isNotEmpty)
+                      if (_searchController.text.isNotEmpty)
                         Positioned(
                           left: 0,
                           top: 0,
-                          child: Container(
-                            color: Colors.black,
-                            height: _searchFocusNode.hasFocus ? 421 : 770,
-                            width: MediaQuery.of(context).size.width - 26,
-                            child: ListView.builder(
-                              itemCount: _suggestions.length,
-                              padding: const EdgeInsets.all(0),
-                              itemBuilder: (context, index) {
-                                final placeName =
-                                    _suggestions.keys.elementAt(index);
-                                final placeDetails = _suggestions[placeName]!;
-                                final admin1 = placeDetails[0];
-                                final country = placeDetails[1];
-
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: ListTile(
-                                    minTileHeight: 37,
-                                    dense: true,
-                                    title: RichText(
-                                      text: TextSpan(
-                                        children: getHighlightedTextSpans(
-                                            "$placeName, $admin1, $country",
-                                            _searchController.text),
-                                      ),
+                          child: _suggestions.isEmpty
+                              ? Container(
+                                  color: Colors.black,
+                                  height: _searchFocusNode.hasFocus ? 421 : 770,
+                                  width: MediaQuery.of(context).size.width - 26,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SFIcon(
+                                          SFIcons.sf_magnifyingglass,
+                                          fontSize: 43,
+                                          color: Colors.white54,
+                                        ),
+                                        const Text(
+                                          "Keine Treffer",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Keine Ergebnisse für "${_searchController.text}" gefunden.',
+                                          style: const TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
                                     ),
-                                    onTap: () {
-                                      FocusScope.of(context).unfocus();
-                                      setState(() {
-                                        _savePlace(
-                                            places.length,
-                                            placeName,
-                                            "$admin1, $country",
-                                            double.tryParse(placeDetails[2])!,
-                                            double.tryParse(placeDetails[3])!,
-                                            bottombarColor);
-                                        // _savePref();
-                                        _suggestions.clear();
-                                        _isSearching = false;
-                                        _searchController.clear();
-                                      });
+                                  ),
+                                )
+                              : Container(
+                                  color: Colors.black,
+                                  height: _searchFocusNode.hasFocus ? 421 : 770,
+                                  width: MediaQuery.of(context).size.width - 26,
+                                  child: ListView.builder(
+                                    itemCount: _suggestions.length,
+                                    padding: const EdgeInsets.all(0),
+                                    itemBuilder: (context, index) {
+                                      final placeName =
+                                          _suggestions.keys.elementAt(index);
+                                      final placeDetails =
+                                          _suggestions[placeName]!;
+                                      final admin1 = placeDetails[0];
+                                      final country = placeDetails[1];
+
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        child: ListTile(
+                                          minTileHeight: 37,
+                                          dense: true,
+                                          title: RichText(
+                                            text: TextSpan(
+                                              children: getHighlightedTextSpans(
+                                                  "$placeName, $admin1, $country",
+                                                  _searchController.text),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            FocusScope.of(context).unfocus();
+                                            setState(() {
+                                              _savePlace(
+                                                  places.length,
+                                                  placeName,
+                                                  "$admin1, $country",
+                                                  double.tryParse(
+                                                      placeDetails[2])!,
+                                                  double.tryParse(
+                                                      placeDetails[3])!,
+                                                  bottombarColor);
+                                              // _savePref();
+                                              _suggestions.clear();
+                                              _isSearching = false;
+                                              _searchController.clear();
+                                            });
+                                          },
+                                        ),
+                                      );
                                     },
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                ),
                         ),
                     ],
                   ),
