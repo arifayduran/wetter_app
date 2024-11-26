@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wetter_app/src/core/home_screen.dart';
 
+// SharedPreferences
+// InitState N/A begin
+// OnRefresh (?)
+// Data tests
+// swipable appbar (?)
+
 void main() {
   runApp(const MainApp());
 }

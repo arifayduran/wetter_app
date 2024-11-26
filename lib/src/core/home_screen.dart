@@ -3,8 +3,8 @@ import "package:flutter/services.dart";
 import "package:flutter_sficon/flutter_sficon.dart";
 import "package:flutter_slidable/flutter_slidable.dart";
 import "package:wetter_app/src/features/weather/application/get_highlighted_textspans.dart";
-import "package:wetter_app/src/features/weather/application/loard_places_from_shared_preferences.dart";
-import "package:wetter_app/src/features/weather/application/save_places_to_shared_preferences.dart";
+// import "package:wetter_app/src/features/weather/application/load_places_from_shared_preferences.dart";
+// import "package:wetter_app/src/features/weather/application/save_places_to_shared_preferences.dart";
 import "package:wetter_app/src/features/weather/application/search_for_places.dart";
 import "package:wetter_app/src/features/weather/data/places.dart";
 import "package:wetter_app/src/features/weather/presentation/widgets/places_card_widget.dart";
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
-    _loadPref();
+    // _loadPref();
 
     _animationController = AnimationController(
       vsync: this,
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _savePlace(int index, String name, String admin1AndCountry,
       double latitude, double longitude, bottombarColor) async {
-    places[PlacesCardWidgetWIdget(text: name)] = [
+    places[PlacesCardWidgetWidget(text: name)] = [
       WeatherScreen(placeIndex: index),
       WeatherScreenWidget(
           name: name,
@@ -104,22 +104,22 @@ class _HomeScreenState extends State<HomeScreen>
     ];
   }
 
-  Future<void> _loadPref() async {
-    try {
-      places = await loadPlacesFromPreferences();
-      setState(() {});
-    } catch (e) {
-      debugPrint('Error loading preferences: $e');
-    }
-  }
+  // Future<void> _loadPref() async {
+  //   try {
+  //     places = await loadPlacesFromPreferences();
+  //     setState(() {});
+  //   } catch (e) {
+  //     debugPrint('Error loading preferences: $e');
+  //   }
+  // }
 
-  Future<void> _savePref() async {
-    try {
-      await savePlacesToPreferences();
-    } catch (e) {
-      debugPrint('Error saving preferences: $e');
-    }
-  }
+  // Future<void> _savePref() async {
+  //   try {
+  //     await savePlacesToPreferences();
+  //   } catch (e) {
+  //     debugPrint('Error saving preferences: $e');
+  //   }
+  // }
 
   // Future<void> _refresh() async {}
 
@@ -489,7 +489,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                   double.tryParse(
                                                       placeDetails[3])!,
                                                   bottombarColor);
-                                              _savePref();
+                                              // _savePref();
                                               _suggestions.clear();
                                               _isSearching = false;
                                               _searchController.clear();

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sficon/flutter_sficon.dart';
 
-class PlacesCardWidgetWIdget extends StatefulWidget {
-  const PlacesCardWidgetWIdget({super.key, required this.text});
+class PlacesCardWidgetWidget extends StatefulWidget {
+  const PlacesCardWidgetWidget({super.key, required this.text});
 
   final String text;
 
   @override
-  State<PlacesCardWidgetWIdget> createState() => _PlacesCardWidgetWIdgetState();
+  State<PlacesCardWidgetWidget> createState() => _PlacesCardWidgetWIdgetState();
 }
 
-class _PlacesCardWidgetWIdgetState extends State<PlacesCardWidgetWIdget> {
+class _PlacesCardWidgetWIdgetState extends State<PlacesCardWidgetWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(

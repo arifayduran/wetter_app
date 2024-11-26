@@ -10,7 +10,7 @@ Future<void> savePlacesToPreferences() async {
   final placesToSave = Map<Widget, List<Widget>>.from(places);
 
   placesToSave.removeWhere((key, value) =>
-      key is PlacesCardWidgetWIdget && key.text == "Mein Standort");
+      key is PlacesCardWidgetWidget && key.text == "Mein Standort");
 
   final placesJson = jsonEncode(placesToSave.map((key, value) {
     return MapEntry(
@@ -31,7 +31,7 @@ String _widgetToJson(Widget widget) {
       'latitude': widget.latitude,
       'longitude': widget.longitude,
     });
-  } else if (widget is PlacesCardWidgetWIdget) {
+  } else if (widget is PlacesCardWidgetWidget) {
     return jsonEncode({
       'type': 'PlacesCardWidgetWIdget',
       'text': widget.text,

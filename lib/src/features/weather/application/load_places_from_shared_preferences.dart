@@ -48,8 +48,26 @@ Widget? _jsonToWidget(String json) {
         bottombarColor: ValueNotifier<Color>(Colors.blue),
       );
     case 'PlacesCardWidgetWIdget':
-      return PlacesCardWidgetWIdget(text: data['text']);
+      return PlacesCardWidgetWidget(text: data['text']);
     default:
       return null;
   }
+}
+
+Map<Widget, List<Widget>> placesFromJson(Map<String, dynamic> jsonMap) {
+  final places = <Widget, List<Widget>>{};
+
+  jsonMap.forEach((key, value) {
+    final widgetKey = _jsonToWidget(key);
+    final widgetList = (value as List<dynamic>)
+        .map((e) => _jsonToWidget(jsonEncode(e)))
+        .whereType<Widget>()
+        .toList();
+
+    if (widgetKey != null) {
+      places[widgetKey] = widgetList;
+    }
+  });
+
+  return places;
 }
