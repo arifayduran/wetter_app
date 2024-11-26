@@ -13,10 +13,9 @@ This was a small project with limited time, so not all features could be complet
 
 Screenshots
 
-Below are six images showcasing the app in action:
-[Attach screenshots here]
+Below are six images showcasing the app in action.
 
-Try It Yourself!
+/ Or: Try It Yourself!
 
 Feel free to clone this repository and test it out. Contributions and feedback are always welcome! 😊
 
