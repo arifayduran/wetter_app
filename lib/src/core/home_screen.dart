@@ -419,7 +419,8 @@ class _HomeScreenState extends State<HomeScreen>
                           child: _suggestions.isEmpty
                               ? Container(
                                   color: Colors.black,
-                                  height: _searchFocusNode.hasFocus ? 421 : 770,
+                                  // height: _searchFocusNode.hasFocus ? 421 : 770,
+                                  height: _searchFocusNode.hasFocus ? 445 : 770,
                                   width: MediaQuery.of(context).size.width - 26,
                                   child: Center(
                                     child: Column(
@@ -451,7 +452,8 @@ class _HomeScreenState extends State<HomeScreen>
                                 )
                               : Container(
                                   color: Colors.black,
-                                  height: _searchFocusNode.hasFocus ? 421 : 770,
+                                  //  height: _searchFocusNode.hasFocus ? 421 : 770,
+                                  height: _searchFocusNode.hasFocus ? 445 : 770,
                                   width: MediaQuery.of(context).size.width - 26,
                                   child: ListView.builder(
                                     itemCount: _suggestions.length,
