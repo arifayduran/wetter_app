@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
-    // _loadPref();
+    _loadPref();
 
     _animationController = AnimationController(
       vsync: this,
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen>
       places = await loadPlacesFromPreferences();
       setState(() {});
     } catch (e) {
-      print('Error loading preferences: $e');
+      debugPrint('Error loading preferences: $e');
     }
   }
 
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen>
     try {
       await savePlacesToPreferences();
     } catch (e) {
-      print('Error saving preferences: $e');
+      debugPrint('Error saving preferences: $e');
     }
   }
 
@@ -489,7 +489,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                   double.tryParse(
                                                       placeDetails[3])!,
                                                   bottombarColor);
-                                              // _savePref();
+                                              _savePref();
                                               _suggestions.clear();
                                               _isSearching = false;
                                               _searchController.clear();

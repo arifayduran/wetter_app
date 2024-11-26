@@ -30,7 +30,7 @@ Future<Map<Widget, List<Widget>>> loadPlacesFromPreferences() async {
 
     return places;
   } catch (e) {
-    print('Error decoding JSON: $e');
+    debugPrint('Error decoding JSON: $e');
     return {};
   }
 }
