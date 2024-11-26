@@ -1,3 +1,3 @@
 # wetter_app
 
-A new Flutter project.
+![alt text](<assets/Readme Screenshots/Simulator Screenshot - iPhone 16 Pro - 2024-11-26 at 23.00.38.png>) ![alt text](<assets/Readme Screenshots/Simulator Screenshot - iPhone 16 Pro - 2024-11-26 at 23.00.41.png>) ![alt text](<assets/Readme Screenshots/Simulator Screenshot - iPhone 16 Pro - 2024-11-26 at 23.00.51.png>) ![alt text](<assets/Readme Screenshots/Simulator Screenshot - iPhone 16 Pro - 2024-11-26 at 23.06.25.png>) ![alt text](<assets/Readme Screenshots/Simulator Screenshot - iPhone 16 Pro - 2024-11-26 at 23.06.31.png>) ![alt text](<assets/Readme Screenshots/Simulator Screenshot - iPhone 16 Pro - 2024-11-26 at 23.06.35.png>)
