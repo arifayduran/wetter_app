@@ -4,8 +4,8 @@ During my time at App Academy Berlin, we were tasked with integrating a simple w
 
 Features
 
-	•	The app dynamically changes the theme and background based on the current weather conditions.
-	•	Simple and intuitive design inspired by the iPhone Weather App.
+    •	The app dynamically changes the theme and background based on the current weather conditions.
+    •	Simple and intuitive design inspired by the iPhone Weather App.
 
 Limitations
 
