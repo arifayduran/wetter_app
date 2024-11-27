@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sficon/flutter_sficon.dart';
+import 'package:wetter_app/src/config/logical_size.dart';
 
 class PlacesCardWidgetWidget extends StatefulWidget {
   const PlacesCardWidgetWidget({super.key, required this.text});
@@ -16,7 +18,9 @@ class _PlacesCardWidgetWIdgetState extends State<PlacesCardWidgetWidget> {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: Container(
-        width: double.infinity,
+        width: kIsWeb
+            ? logicWidth - 10 - 13 - 13
+            : MediaQuery.of(context).size.width - 10 - 13 - 13,
         height: 100,
         decoration: BoxDecoration(
             image: const DecorationImage(
@@ -50,7 +54,7 @@ class _PlacesCardWidgetWIdgetState extends State<PlacesCardWidgetWidget> {
                     width: 200,
                     child: widget.text == "Mein Standort"
                         ? const Text(
-                            "Cupertino",
+                            "Noch Nicht Bekannt",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 10,

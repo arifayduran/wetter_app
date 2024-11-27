@@ -1,3 +1,4 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_sficon/flutter_sficon.dart";
 import "package:geocoding/geocoding.dart";
@@ -117,16 +118,24 @@ class _MyLocationScreenWidgetState extends State<MyLocationScreenWidget> {
       _latitude = position.latitude;
       _longitude = position.longitude;
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-      Placemark place = placemarks[0];
-      setState(() {
-        _isLocationLoading = false;
-        _location = "${place.locality}, ${place.country}";
-        requestWeatherData();
-      });
+      if (kIsWeb) {
+        setState(() {
+          _isLocationLoading = false;
+          _location = "Breitengrad: $_latitude, Längengrad: $_longitude";
+          requestWeatherData();
+        });
+      } else {
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+        Placemark place = placemarks[0];
+        setState(() {
+          _isLocationLoading = false;
+          _location = "${place.locality}, ${place.country}";
+          requestWeatherData();
+        });
+      }
     } catch (e) {
       setState(() {
         _isLocationLoading = false;

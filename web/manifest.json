@@ -1,11 +1,11 @@
 {
-    "name": "wetter_app",
-    "short_name": "wetter_app",
+    "name": "iOS Weather App Imitation",
+    "short_name": "iOS Weather App Imitation",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",
     "theme_color": "#hexcode",
-    "description": "A new Flutter project.",
+    "description": "iOS Weather App Imitation with Flutter by Arif Ayduran",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
