@@ -19,6 +19,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late PageController _pageController;
   late int _currentIndex;
 
+
   @override
   void initState() {
     super.initState();

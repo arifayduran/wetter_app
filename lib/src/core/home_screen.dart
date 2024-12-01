@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   static const platform = MethodChannel("com.example.speech");
 
+  // final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -349,6 +351,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 behavior: MyCustomScrollBehavior(),
                                 child: ListView.builder(
                                   clipBehavior: Clip.none,
+                                  // controller: scrollController,
                                   padding: const EdgeInsets.all(0),
                                   shrinkWrap: true,
                                   itemCount: places.length,
@@ -518,6 +521,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           behavior: MyCustomScrollBehavior(),
                                           child: ListView.builder(
                                             itemCount: _suggestions.length,
+                                            // controller: scrollController,
                                             padding: const EdgeInsets.all(0),
                                             itemBuilder: (context, index) {
                                               final placeName = _suggestions

@@ -9,5 +9,6 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.touch,
         PointerDeviceKind.mouse,
         PointerDeviceKind.unknown,
+        PointerDeviceKind.trackpad
       };
 }
