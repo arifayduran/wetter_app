@@ -6,6 +6,7 @@ import 'package:wetter_app/src/core/home_screen.dart';
 // OnRefresh (?)
 // Data tests
 // swipable appbar (?)
+// IOS ICIN FARKLI BENUTZEN: GERCI WEEBSEITE DE YAZI OLACAK
 
 void main() {
   runApp(const MainApp());
