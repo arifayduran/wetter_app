@@ -5,8 +5,13 @@ import 'package:wetter_app/src/core/home_screen.dart';
 // InitState N/A begin
 // OnRefresh (?)
 // Data tests
+// Tastatur gelicnce kcükmesi
+// stack tastatur acilinca ui hatasi vardi?
 // swipable appbar (?)
 // IOS ICIN FARKLI BENUTZEN: GERCI WEEBSEITE DE YAZI OLACAK
+// scaffol ddisina basinca shomodal gidiyor!!!
+// flackern yapiyor???
+// mein standort gec dolyuor
 
 void main() {
   runApp(const MainApp());
