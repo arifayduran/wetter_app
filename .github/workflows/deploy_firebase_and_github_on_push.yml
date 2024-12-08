@@ -36,7 +36,7 @@ jobs:
 
       # Step 5: Build for GitHub Pages (with a specific base href for GitHub Pages)
       - name: Build for GitHub Pages
-        run: flutter pub get && flutter build web --release --web-renderer canvaskit --base-href /arifayduran_dev/ # /html
+        run: flutter pub get && flutter build web --release --web-renderer canvaskit --base-href /wetter_app/ # /html
 
       # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
