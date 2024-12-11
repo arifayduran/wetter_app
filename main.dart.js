@@ -83112,7 +83112,9 @@ $1(a){var s,r,q=this.a
 if(q.ch)return
 switch(a.a.a){case 0:s=a.b
 q.sm(0,q.a.afR(s,null,!1,s!=null,null,a.c))
-this.b.eU(0,null)
+s=this.b
+if((s.a.a&30)!==0)throw A.c(A.P("VideoPlayerController already initialized"))
+s.eU(0,null)
 q.qB()
 q.qC()
 q.lc()
@@ -83409,8 +83411,8 @@ v4(a,b){return this.WR(a,b)},
 WR(a,b){var s=0,r=A.J(t.H),q,p=this,o
 var $async$v4=A.K(function(c,d){if(c===1)return A.G(d,r)
 while(true)switch(s){case 0:o=p.a.h(0,a).b
-o.muted=!(b>0)
-o.volume=b
+o.muted=b===0
+if(b>0)o.volume=b
 q=null
 s=1
 break
