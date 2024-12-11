@@ -19,7 +19,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late PageController _pageController;
   late int _currentIndex;
 
-
   @override
   void initState() {
     super.initState();
@@ -74,7 +73,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
               bottomNavigationBar: Container(
                 height: 72,
-                color: value.withOpacity(.8),
+                color: value.withValues(alpha: .8),
                 child: Padding(
                   padding:
                       const EdgeInsets.only(top: 10.0, right: 20, left: 20),
@@ -100,7 +99,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             expansionFactor: 3,
                             spacing: 6,
                             activeDotColor: Colors.white,
-                            dotColor: Colors.white.withOpacity(0.5),
+                            dotColor: Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                         GestureDetector(

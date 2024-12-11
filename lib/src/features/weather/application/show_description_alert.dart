@@ -5,7 +5,7 @@ void showDescriptionAlert(BuildContext context, Color color, text) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: color.withOpacity(0.8),
+          backgroundColor: color.withValues(alpha: 0.8),
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),

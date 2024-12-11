@@ -450,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   child: Container(
                                     height: 1000,
                                     width: 600,
-                                    color: Colors.black.withOpacity(0.8),
+                                    color: Colors.black.withValues(alpha: 0.8),
                                   ),
                                 ),
                               ),

@@ -483,7 +483,7 @@ class _MyLocationScreenWidgetState extends State<MyLocationScreenWidget> {
                       height: 136,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: _widgetColor.withOpacity(0.8),
+                          color: _widgetColor.withValues(alpha: 0.8),
                           borderRadius: BorderRadius.circular(13)),
                       child: Column(
                         children: [
@@ -596,7 +596,7 @@ class _MyLocationScreenWidgetState extends State<MyLocationScreenWidget> {
                       height: 312,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: _widgetColor.withOpacity(0.8),
+                          color: _widgetColor.withValues(alpha: 0.8),
                           borderRadius: BorderRadius.circular(13)),
                       child: Column(
                         children: [
@@ -691,8 +691,8 @@ class _MyLocationScreenWidgetState extends State<MyLocationScreenWidget> {
                                                         "${_todayMinTemp?.toStringAsFixed(0)}°  ",
                                                         style: TextStyle(
                                                             color: Colors.white
-                                                                .withOpacity(
-                                                                    0.5),
+                                                                .withValues(
+                                                                    alpha: 0.5),
                                                             fontSize: 15.4,
                                                             height: 0,
                                                             fontWeight:

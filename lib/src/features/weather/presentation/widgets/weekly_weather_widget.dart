@@ -50,7 +50,7 @@ class WeeklyWeatherWidget extends StatelessWidget {
                     child: Text(
                       "${minTemp.toStringAsFixed(0)}°",
                       style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                           fontSize: 15.4,
                           height: 0,
                           fontWeight: FontWeight.w500),
