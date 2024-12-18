@@ -12,6 +12,7 @@ import 'package:wetter_app/src/core/home_screen.dart';
 // scaffol ddisina basinca shomodal gidiyor!!!
 // flackern yapiyor???
 // mein standort gec dolyuor
+// diktierung
 
 void main() {
   runApp(const MainApp());
