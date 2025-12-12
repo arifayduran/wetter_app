@@ -7,11 +7,18 @@ import 'package:wetter_app/src/features/weather/presentation/widgets/weather_scr
 ValueNotifier<Color> bottombarColor = ValueNotifier(Colors.blue);
 
 Map<Widget, List<Widget>> places = {
-  const PlacesCardWidgetWidget(text: "Mein Standort"): [
+  const PlacesCardWidgetWidget(
+    text: "Mein Standort",
+    isMyLocation: true,
+  ): [
     const WeatherScreen(placeIndex: 0),
     MyLocationScreenWidget(bottombarColor: bottombarColor)
   ],
-  const PlacesCardWidgetWidget(text: "Istanbul"): [
+  const PlacesCardWidgetWidget(
+    text: "Istanbul",
+    latitude: 41.01384,
+    longitude: 28.94966,
+  ): [
     const WeatherScreen(placeIndex: 1),
     WeatherScreenWidget(
         name: "Istanbul",
@@ -20,7 +27,11 @@ Map<Widget, List<Widget>> places = {
         longitude: 28.94966,
         bottombarColor: bottombarColor)
   ],
-  const PlacesCardWidgetWidget(text: "Berlin"): [
+  const PlacesCardWidgetWidget(
+    text: "Berlin",
+    latitude: 52.52437,
+    longitude: 13.41053,
+  ): [
     const WeatherScreen(placeIndex: 2),
     WeatherScreenWidget(
         name: "Berlin",
@@ -29,7 +40,11 @@ Map<Widget, List<Widget>> places = {
         longitude: 13.41053,
         bottombarColor: bottombarColor)
   ],
-  const PlacesCardWidgetWidget(text: "Tokio"): [
+  const PlacesCardWidgetWidget(
+    text: "Tokio",
+    latitude: 35.6895,
+    longitude: 139.69171,
+  ): [
     const WeatherScreen(placeIndex: 3),
     WeatherScreenWidget(
         name: "Tokio",

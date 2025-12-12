@@ -74,7 +74,11 @@ class _HomeScreenState extends State<HomeScreen>
     // if (places.containsKey(PlacesCardWidgetWidget(text: name))) {
     //   showAboutDialog(context: context);
     // } else {
-    places[PlacesCardWidgetWidget(text: name)] = [
+    places[PlacesCardWidgetWidget(
+      text: name,
+      latitude: latitude,
+      longitude: longitude,
+    )] = [
       WeatherScreen(placeIndex: index),
       WeatherScreenWidget(
           name: name,
@@ -279,14 +283,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     )
                                   : GestureDetector(
                                       onTap: _startSpeechRecognition,
-                                      child: const Padding(
-                                        padding:
-                                            EdgeInsets.only(top: 6.0, left: 6),
-                                        child: Icon(
-                                          Icons.mic,
-                                          color: Colors.white54,
-                                          size: 14,
-                                        ),
+                                      child: const Icon(
+                                        Icons.mic,
+                                        color: Colors.white54,
+                                        size: 14,
                                       ),
                                     ),
                               filled: true,
