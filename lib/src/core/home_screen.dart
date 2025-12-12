@@ -38,6 +38,66 @@ class _HomeScreenState extends State<HomeScreen>
     // _loadPref();
   }
 
+  Future<bool> _showDeleteConfirmation(
+      BuildContext context, String placeName) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFF1C1C1E),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              title: Text(
+                '"$placeName" löschen?',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              content: const Text(
+                'Dieser Ort wird aus deiner Liste entfernt.',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text(
+                    'Abbrechen',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text(
+                    'Löschen',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  void _deletePlace(int index) {
+    setState(() {
+      places.remove(places.keys.toList()[index]);
+    });
+  }
+
   void _onSearchChanged(String query) async {
     if (query.isEmpty) {
       setState(() {
@@ -375,6 +435,10 @@ class _HomeScreenState extends State<HomeScreen>
                                         ),
                                       );
                                     } else {
+                                      final placeName =
+                                          (places.keys.toList()[index]
+                                                  as PlacesCardWidgetWidget)
+                                              .text;
                                       return Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 10),
@@ -387,19 +451,23 @@ class _HomeScreenState extends State<HomeScreen>
                                               extentRatio: 0.19,
                                               motion: const ScrollMotion(),
                                               dismissible: DismissiblePane(
-                                                  onDismissed: () {
-                                                setState(() {
-                                                  places.remove(places.keys
-                                                      .toList()[index]);
-                                                });
-                                              }),
+                                                confirmDismiss: () async {
+                                                  return await _showDeleteConfirmation(
+                                                      context, placeName);
+                                                },
+                                                onDismissed: () {
+                                                  _deletePlace(index);
+                                                },
+                                              ),
                                               children: [
                                                 CustomSlidableAction(
-                                                  onPressed: (_) {
-                                                    setState(() {
-                                                      places.remove(places.keys
-                                                          .toList()[index]);
-                                                    });
+                                                  onPressed: (_) async {
+                                                    final shouldDelete =
+                                                        await _showDeleteConfirmation(
+                                                            context, placeName);
+                                                    if (shouldDelete) {
+                                                      _deletePlace(index);
+                                                    }
                                                   },
                                                   backgroundColor: Colors.red,
                                                   foregroundColor: Colors.white,
