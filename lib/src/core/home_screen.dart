@@ -282,10 +282,10 @@ class _HomeScreenState extends State<HomeScreen>
                                       child: const Padding(
                                         padding:
                                             EdgeInsets.only(top: 6.0, left: 6),
-                                        child: SFIcon(
-                                          SFIcons.sf_mic_fill,
+                                        child: Icon(
+                                          Icons.mic,
                                           color: Colors.white54,
-                                          fontSize: 14,
+                                          size: 14,
                                         ),
                                       ),
                                     ),

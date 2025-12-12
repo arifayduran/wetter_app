@@ -367,7 +367,7 @@ class _WeatherScreenWidgetState extends State<WeatherScreenWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const SFIcon(
-                                SFIcons.sf_clock_arrow_2_circlepath,
+                                SFIcons.sf_clock,
                                 color: Color.fromARGB(255, 245, 212, 105),
                                 fontSize: 13,
                               ),

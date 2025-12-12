@@ -20,13 +20,22 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'  # Optionally specify the version you need
+          flutter-version: '3.38.4'
+          cache: true
 
-      # Step 3: Install dependencies and build for Firebase Hosting (base href is for root)
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Step 4: Build for Firebase Hosting (optimized)
       - name: Build for Firebase Hosting
-        run: flutter pub get && flutter build web --release --web-renderer canvaskit # /html
+        run: |
+          flutter build web \
+            --release \
+            --web-renderer canvaskit \
+            --dart-define=FLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/
 
-      # Step 4: Deploy to Firebase Hosting
+      # Step 5: Deploy to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
@@ -34,11 +43,16 @@ jobs:
           channelId: live
           projectId: wetter-app-7f7ca
 
-      # Step 5: Build for GitHub Pages (with a specific base href for GitHub Pages)
+      # Step 6: Build for GitHub Pages (with a specific base href for GitHub Pages)
       - name: Build for GitHub Pages
-        run: flutter pub get && flutter build web --release --web-renderer canvaskit --base-href /wetter_app/ # /html
+        run: |
+          flutter build web \
+            --release \
+            --web-renderer canvaskit \
+            --dart-define=FLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/ \
+            --base-href /wetter_app/
 
-      # Step 6: Deploy to GitHub Pages
+      # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

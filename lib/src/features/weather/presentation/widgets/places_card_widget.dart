@@ -64,7 +64,7 @@ class _PlacesCardWidgetWIdgetState extends State<PlacesCardWidgetWidget> {
                         : const Row(
                             children: [
                               SFIcon(
-                                SFIcons.sf_clock_arrow_2_circlepath,
+                                SFIcons.sf_clock,
                                 color: Colors.white,
                                 fontSize: 10,
                               ),
@@ -128,8 +128,6 @@ class _PlacesCardWidgetWIdgetState extends State<PlacesCardWidgetWidget> {
     );
   }
 }
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_sficon/flutter_sficon.dart';

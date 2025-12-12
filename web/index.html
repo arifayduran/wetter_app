@@ -1,23 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="iOS Weather App Imitation with Flutter by Arif Ayduran">
 
   <!-- iOS meta tags & icons -->
@@ -29,17 +17,192 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>wetter_app</title>
+  <title>Wetter App</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  
+  <style>
+    /* Loading Splash Screen Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    #loading-splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 50%, #000 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+
+    #loading-splash.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .weather-icon-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 30px;
+    }
+
+    .sun {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ffd93d 0%, #ff9500 100%);
+      border-radius: 50%;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 40px rgba(255, 217, 61, 0.5);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .cloud {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 50px;
+      background: linear-gradient(180deg, #e8e8e8 0%, #c9c9c9 100%);
+      border-radius: 50px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .cloud::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: 15px;
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%);
+      border-radius: 50%;
+    }
+
+    .cloud::after {
+      content: '';
+      position: absolute;
+      top: -15px;
+      right: 15px;
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(180deg, #f5f5f5 0%, #ddd 100%);
+      border-radius: 50%;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.05); opacity: 0.9; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    .loading-text {
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .loading-subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+
+    .loading-bar-container {
+      width: 200px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .loading-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #4a9eff 0%, #007aff 100%);
+      border-radius: 2px;
+      animation: loading 2.5s ease-out forwards;
+    }
+
+    @keyframes loading {
+      0% { width: 0%; }
+      20% { width: 20%; }
+      50% { width: 60%; }
+      80% { width: 85%; }
+      100% { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
-  <canvas id="myCanvas"></canvas>
+  <!-- Loading Splash Screen -->
+  <div id="loading-splash">
+    <div class="weather-icon-container">
+      <div class="sun"></div>
+      <div class="cloud"></div>
+    </div>
+    <div class="loading-text">Wetter</div>
+    <div class="loading-subtitle">Lädt...</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar"></div>
+    </div>
+  </div>
 
-  <!-- Dein Skript hier am Ende -->
+  <script src="flutter_bootstrap.js" async></script>
+
   <script>
+    // Hide splash when Flutter is ready
+    window.addEventListener('flutter-first-frame', function() {
+      const splash = document.getElementById('loading-splash');
+      if (splash) {
+        splash.classList.add('fade-out');
+        setTimeout(() => {
+          splash.style.display = 'none';
+        }, 500);
+      }
+    });
+
+    // Fallback: Hide splash after max 8 seconds
+    setTimeout(function() {
+      const splash = document.getElementById('loading-splash');
+      if (splash && !splash.classList.contains('fade-out')) {
+        splash.classList.add('fade-out');
+        setTimeout(() => {
+          splash.style.display = 'none';
+        }, 500);
+      }
+    }, 8000);
+
+    // Safari WebGL2 workaround
     if (
       navigator.userAgent.indexOf("Safari") !== -1 &&
       navigator.userAgent.indexOf("Chrome") === -1
@@ -57,6 +220,5 @@
       };
     }
   </script>
-</body>
 </body>
 </html>
