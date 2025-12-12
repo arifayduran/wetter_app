@@ -29,11 +29,7 @@ jobs:
 
       # Step 4: Build for Firebase Hosting (optimized)
       - name: Build for Firebase Hosting
-        run: |
-          flutter build web \
-            --release \
-            --web-renderer canvaskit \
-            --dart-define=FLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/
+        run: flutter build web --release
 
       # Step 5: Deploy to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -45,12 +41,7 @@ jobs:
 
       # Step 6: Build for GitHub Pages (with a specific base href for GitHub Pages)
       - name: Build for GitHub Pages
-        run: |
-          flutter build web \
-            --release \
-            --web-renderer canvaskit \
-            --dart-define=FLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/ \
-            --base-href /wetter_app/
+        run: flutter build web --release --base-href /wetter_app/
 
       # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
@@ -58,4 +49,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
-
